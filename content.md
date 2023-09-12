@@ -44,7 +44,7 @@ If we open the model files in our new project, then we will see that the associa
 
 Let's take a look at two side-by-side: `Character#movie` and `Movie#director`:
 
-```ruby
+```ruby{5}
 # app/models/character.rb
 
 # ...
@@ -61,7 +61,7 @@ class Character < ApplicationRecord
 end
 ```
 
-```ruby
+```ruby{8}
 # app/models/movie.rb
 
 # ...
@@ -85,7 +85,7 @@ Both of these methods are from a 1-N association and represent going from the "m
 
 All of our association accessor methods follow the same pattern! What if we want to define the `Character#actor` 1-N association?
 
-```ruby
+```ruby{15-23}
 # app/models/character.rb
 
 # ...
@@ -133,7 +133,7 @@ class Character < ApplicationRecord
 
 The first argument is the name of the method we want, then two key/value pairs containing the name of the class and the foreign key. So if we want a method `.movie` that we can call on `Character`, we can just write (and comment out or delete our old code):
 
-```ruby
+```ruby{5}
 # app/models/character.rb
 
 # ...
@@ -193,7 +193,7 @@ If you prefer to write out the entire thing, you are welcome to, but this is jus
 
 As opposed to `belongs_to(:movie)` in `Character` (`Character#movie`), we also want to have a `Movie#characters` method, which is the other side of the relationship, the many to the one. We could define this ourselves like so:
 
-```ruby
+```ruby{8-12}
 # app/models/movie.rb
 
 # ...
@@ -225,7 +225,7 @@ This is a different method compared to the one to the many. Of course, the `dire
 
 We need to use the method `has_many`, which has a similar form:
 
-```ruby
+```ruby{9}
 # app/models/movie.rb
 
 # ...
