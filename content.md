@@ -32,7 +32,7 @@ LTI{Load Refactoring Must See Movies GUI 2 assignment}(https://grades.firstdraft
 
 Our starting point code for this project, `refactoring-msm-gui-2`, is one possible solution for `refactoring-msm-gui-1` and `msm-validations`.
 
-We have instance variables ("association accessors") defined in our models, which allow us to replace queries in the view templates with things like `<%= @the_movie.director.name %>`. We also have validations defined in our models to prevent bogus data from entering our database and breaking things.
+We have instance methods ("association accessors") defined in our models, which allow us to replace queries in the view templates with things like `<%= @the_movie.director.name %>`. We also have validations defined in our models to prevent bogus data from entering our database and breaking things.
 
 Since this is another refactoring projects, most of the specs should already pass when you `rake grade`. However, there's a few failing, which you will implement in this project.
 
@@ -159,7 +159,7 @@ Try this out. Comment or delete the `def movie` section of the model once you ha
 
 The `def movie` that we wrote out line-by-line and the new `belongs_to` version are producing the same thing. But `belongs_to` is somewhat shorter, and it reads better. It is easier to understand at a glance.
 
-Moreover, we can look at an example in our Rails console for why this technique is so good. Open a `rails console`. 
+Moreover, we can look at an example in our Rails console for why this technique is so good. Be sure to run `rake sample_data`, then open a `rails console`. 
 
 What if we asked for all of the characters from movies that are newer than 1994? Until today we couldn't do that! 
 
@@ -185,7 +185,7 @@ as simply
 belongs_to(:movie)
 ``` 
 
-We can delete most of the code because the method `belongs_to` will follow a well defined pattern of naming! So as long as the function, table, and foreign key columns share the same name (with only capitalization difference), then we can write a very short, explicit, and clear association accessor method.
+We can delete most of the code because the method `belongs_to` will follow a well defined pattern of naming! As long as the function, table, and foreign key columns share the same name (with only capitalization difference), then we can write a very short, explicit, and clear association accessor method.
 
 If you prefer to write out the entire thing, you are welcome to, but this is just another shortcut in your toolbox.
 
@@ -230,6 +230,9 @@ We need to use the method `has_many`, which has a similar form:
 
 # ...
 class Movie < ApplicationRecord
+  validates(:director_id, presence: true)
+  validates(:title, uniqueness: true)
+  
   belongs_to(:director)
   has_many(:characters, :class_name => "Character", :foreign_key => "character_id")
 
@@ -238,7 +241,6 @@ class Movie < ApplicationRecord
   #   the_many = Character.where( {:movie_id => key })
   #   return the_many
   # end
-# ...
 end
 ```
 
