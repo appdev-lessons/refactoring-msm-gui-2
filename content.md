@@ -1,4 +1,4 @@
-# Refactoring Must See Movies GUI with `has_many` and `belongs_to`
+# Refactoring Must See Movies GUI with Association Accessor Helper Methods
 
 - Note: Validations were added, so specs are slightly different
 
