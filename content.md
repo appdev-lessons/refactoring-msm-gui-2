@@ -1,6 +1,6 @@
 # Refactoring Must See Movies GUI with Association Accessor Helper Methods
 
-<div class="bg-red-100 py-1 px-5" markdown="1">
+<div class="bg-red-100 py-1 px-5 bleed-full" markdown="1">
 [Here is a walkthrough video for this lesson.](https://share.descript.com/view/wy5mgzsL2WX) 
 
 **Please note an important difference:** Since the video is from a version of the project using Ruby version 2.7, I defined methods like so:
