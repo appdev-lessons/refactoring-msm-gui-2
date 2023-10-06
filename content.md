@@ -287,4 +287,47 @@ Your goal is to define all six 1-Ns using `belongs_to` and `has_many`:
 
 When you are done, the last few `rake grade` specs should pass.
 
+## The `:source` and `:through` keywords
+
+It may be helpful to use some additional keyword arguments on the `has_many` method.
+
+There is more detail in the [Rails guide for `has_many :through`](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association) and for [the `:source` keyword](https://guides.rubyonrails.org/association_basics.html#options-for-has-many-source), but let's discuss them with a practical example relevant to our database tables here.
+
+You can use the `has_many :through` and `belongs_to` associations to set up a many-to-many relationship between models through a join model. The `:source` option can be used to specify the source association for a `has_many :through` association.
+
+For example, let's consider a movie database where a `Movie` has many `Actor`s through `Character`s, and an `Actor` has many `Movie`s through `Character`s. Here's how you can set that up:
+
+In the `Movie` model:
+
+```ruby{3}
+class Movie < ApplicationRecord
+  has_many(:characters)
+  has_many(:actors, :through => :characters, :source => :actor)
+end
+```
+
+And in the `Actor` model:
+
+```ruby{3}
+class Actor < ApplicationRecord
+  has_many(:characters)
+  has_many(:movies, :through => :characters, :source => :movie)
+end
+```
+
+In the `Character` model:
+
+```ruby
+class Character < ApplicationRecord
+  belongs_to(:movie)
+  belongs_to(:actor)
+end
+```
+
+With this setup, you can access all actors in a movie with `the_movie.actors`, and all movies an actor has been in with `the_actor.movies`.
+
+The `:through` option specifies the association name for the join model (`:characters`), and the `:source` option specifies the name of the association in the join model that `has_many :through` is going through to get to the `Actor` or `Movie`. 
+
+The `:source` option is necessary here because the source of the `has_many` could not be automatically inferred from the association name. If the `:source` option is not provided, Rails would look for an association named `actors` in the `Character` model when you invoke `the_movie.actors`, and similarly for `the_actor.movies`. With the `:source` option, you're telling Rails to use the `:actor` and `:movie` associations in the `Character` model instead.
+
 ---
