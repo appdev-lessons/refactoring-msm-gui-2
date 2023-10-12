@@ -234,7 +234,7 @@ class Movie < ApplicationRecord
   validates(:title, uniqueness: true)
   
   belongs_to(:director)
-  has_many(:characters, :class_name => "Character", :foreign_key => "character_id")
+  has_many(:characters, :class_name => "Character", :foreign_key => "movie_id")
 
   # def characters
   #   key = self.id
@@ -249,7 +249,7 @@ All we did was provide the method with the three pieces of information that we e
 Similar to `belongs_to`, if the three arguments match, we can write:
 
 ```ruby
-has_many(:characters, :class_name => "Character", :foreign_key => "character_id")
+has_many(:characters, :class_name => "Character", :foreign_key => "movie_id")
 ``` 
 
 as simply
