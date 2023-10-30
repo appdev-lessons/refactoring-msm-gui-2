@@ -18,7 +18,7 @@ has_many(:name_that_we_want, { :class_name => "", :foreign_key => "" })
 
 However, in Ruby version 3, we _must_ use keyword arguments like so (dropping the curly braces and removing the hash rockets):
 
-```ruby{1:(30-44)}
+```ruby{1:(30-43)}
 belongs_to(:name_that_we_want, class_name: "", foreign_key: "")
 has_many(:name_that_we_want, class_name: "", foreign_key: "")
 ```
