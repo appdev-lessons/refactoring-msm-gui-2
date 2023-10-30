@@ -1,23 +1,23 @@
 # Refactoring Must See Movies GUI with Association Accessor Helper Methods
 
-<div class="bg-red-100 py-1 px-5 bleed-full" markdown="1">
+<div class="bg-red-100 py-1 px-5" markdown="1">
 [Here is a walkthrough video for this lesson.](https://share.descript.com/view/wy5mgzsL2WX) 
 
 **Please note an important difference:** Since the video is from a version of the project using Ruby version 2.7, I defined methods like so:
 
 ```ruby
-belongs_to(:name_that_we_want, { :class_name => "", :foreign_key => "" })
-has_many(:name_that_we_want, { :class_name => "", :foreign_key => "" })
+belongs_to(:method_name, { :class_name => "", :foreign_key => "" })
+has_many(:method_name, { :class_name => "", :foreign_key => "" })
 ```
 
-However, in Ruby version 3+ (which is the current Ruby version for the project), we need to drop the `{}` curly braces from the Hash argument (i.e. we need to use some different Ruby syntax, since the old way was deprecated for these methods):
+However, in Ruby version 3, we need to use keyword arguments like so:
 
 ```ruby
-belongs_to(:name_that_we_want, :class_name => "", :foreign_key => "")
-has_many(:characters, :class_name => "", :foreign_key => "")
+belongs_to(:method_name, class_name: "", foreign_key: "")
+has_many(:method_name, class_name: "", foreign_key: "")
 ```
 
-**Drop the curly braces when you define these methods.** The text below contains the correct syntax, with the curly braces dropped.
+**Use the latter syntax when you define these methods.** The text below contains the correct syntax, with the keyword arguments.
 </div>
 
 ## Objective
