@@ -182,7 +182,7 @@ It is very common to query one table with the columns of another. And if we look
 Yet another reason that `belongs_to` is great, is that we can write: 
 
 ```ruby
-belongs_to(:movie, :class_name => "Movie", :foreign_key => "movie_id")
+belongs_to(:movie, class_name: "Movie", foreign_key: "movie_id")
 ``` 
 
 as simply
@@ -282,7 +282,7 @@ class Movie < ApplicationRecord
   validates(:title, uniqueness: true)
   
   belongs_to(:director)
-  has_many(:characters, :class_name => "Character", :foreign_key => "movie_id")
+  has_many(:characters, class_name: "Character", foreign_key: "movie_id")
 
   # def characters
   #   key = self.id
@@ -297,7 +297,7 @@ All we did was provide the method with the three pieces of information that we e
 Similar to `belongs_to`, if the three arguments match, we can write:
 
 ```ruby
-has_many(:characters, :class_name => "Character", :foreign_key => "movie_id")
+has_many(:characters, class_name: "Character", foreign_key: "movie_id")
 ``` 
 
 as simply
@@ -313,12 +313,12 @@ We could have called this `movies`, which would have allowed us to write `has_ma
 So in the case where we selected our own, non-conventional names, then we need to be explicit and write: 
 
 ```ruby
-has_many(:filmography, :class_name => "Movie")
+has_many(:filmography, class_name: "Movie")
 ``` 
 
-We can still omit the foreign key, because now the method will know to call the foreign key `movie_id` based on the `:class_name`.
+We can still omit the foreign key, because now the method will know to call the foreign key `movie_id` based on the `class_name:`.
 
-## Finishing up with the association accessor wizard
+## Association accessor wizard
 
 For the rest of this project, follow along with the video to learn about the helpful association accessor wizard that we built for you:
 
@@ -335,13 +335,13 @@ Your goal is to define all six 1-Ns using `belongs_to` and `has_many`:
 
 When you are done, the last few `rake grade` specs should pass.
 
-## The `:source` and `:through` keywords
+## The `:source` and `:through` keyword arguments
 
 It may be helpful to use some additional keyword arguments on the `has_many` method.
 
-There is more detail in the [Rails guide for `has_many :through`](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association) and for [the `:source` keyword](https://guides.rubyonrails.org/association_basics.html#options-for-has-many-source), but let's discuss them with a practical example relevant to our database tables here.
+There is more detail in the [Rails guide for `has_many :through`](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association) and for [the `:source` keyword argument](https://guides.rubyonrails.org/association_basics.html#options-for-has-many-source), but let's discuss them with a practical example relevant to our database tables here.
 
-You can use the `has_many :through` and `belongs_to` associations to set up a many-to-many relationship between models through a join model. The `:source` option can be used to specify the source association for a `has_many :through` association.
+You can use the `has_many :through` and `belongs_to` associations to set up a many-to-many relationship between models through a join model. The `:source` keyword argument can be used to specify the source association for a `has_many :through` association.
 
 For example, let's consider a movie database where a `Movie` has many `Actor`s through `Character`s, and an `Actor` has many `Movie`s through `Character`s. Here's how you can set that up:
 
@@ -350,7 +350,7 @@ In the `Movie` model:
 ```ruby{3}
 class Movie < ApplicationRecord
   has_many(:characters)
-  has_many(:actors, :through => :characters, :source => :actor)
+  has_many(:actors, through: :characters, source: :actor)
 end
 ```
 
@@ -359,7 +359,7 @@ And in the `Actor` model:
 ```ruby{3}
 class Actor < ApplicationRecord
   has_many(:characters)
-  has_many(:movies, :through => :characters, :source => :movie)
+  has_many(:movies, through: :characters, source: :movie)
 end
 ```
 
@@ -374,9 +374,9 @@ end
 
 With this setup, you can access all actors in a movie with `the_movie.actors`, and all movies an actor has been in with `the_actor.movies`.
 
-The `:through` option specifies the association name for the join model (`:characters`), and the `:source` option specifies the name of the association in the join model that `has_many :through` is going through to get to the `Actor` or `Movie`. 
+The `through:` keyword argument specifies the association name for the join model (`:characters`), and the `source:` keyword argument specifies the name of the association in the join model that `has_many through:` is going through to get to the `Actor` or `Movie`. 
 
-The `:source` option is necessary here because the source of the `has_many` could not be automatically inferred from the association name. If the `:source` option is not provided, Rails would look for an association named `actors` in the `Character` model when you invoke `the_movie.actors`, and similarly for `the_actor.movies`. With the `:source` option, you're telling Rails to use the `:actor` and `:movie` associations in the `Character` model instead.
+The `source:` keyword argument is necessary here because the source of the `has_many` could not be automatically inferred from the association name. If the `source:` keyword argument is not provided, Rails would look for an association named `actors` in the `Character` model when you invoke `the_movie.actors`, and similarly for `the_actor.movies`. With the `source:` keyword argument, you're telling Rails to use the `:actor` and `:movie` associations in the `Character` model instead.
 
 ---
 
