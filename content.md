@@ -161,48 +161,6 @@ end
 
 Try this out. Comment or delete the `def movie` section of the model once you have the `belongs_to()` filled out. In your live app preview, visit an actor details page (did you run `rake sample_data` yet?). Now if we scroll down to the "Filmography" table, there is a column showing the character name in each movie for the given actor. So everything is still working even though we deleted our previous association accessor method!
 
-### Aside: keyword arguments
-
-Note the structure we are using for our association accessor helper method `belongs_to`:
-
-```ruby
-belongs_to(:movie, class_name: "Movie", foreign_key: "movie_id")
-```
-
-The structure `some_key: "some_value"` used in e.g. `class_name: "Movie"` is known as a **keyword argument** in Ruby, as opposed to **positional arguments**.
-
-Positional arguments are the most common way to pass arguments to a method in Ruby. They are based on the order in which values are passed:
-
-```ruby
-def greet(name, greeting)
-  return "#{greeting}, #{name}!"
-end
-
-pp greet("Ben", "Hello")
-```
-{: .repl #positional title="Positional arguments" points="1"}
-
-In this case, `"Ben"` is passed as the first argument and `"Hello"` as the second. The method `greet` then uses these in the order they were passed.
-
-On the other hand, keyword arguments are a way to pass arguments to a method in _a hash-like manner_. With keyword arguments, you can provide a name to the value you're passing to the method. Here's the same example as above, but with keyword arguments:
-
-```ruby
-def greet(name:, greeting:)
-  return "#{greeting}, #{name}!"
-end
-
-pp greet(name: "Ben", greeting: "Hello")]
-```
-{: .repl #keyword title="Keyword arguments" points="1"}
-
-In this case, we're explicitly saying that `"Ben"` is for the `name` argument, and `"Hello"` is for the `greeting` argument. This gives us more flexibility, as it doesn't matter which order we pass the arguments in because they're explicitly matched to their respective parameters in the method definition.
-
-```ruby
-pp greet(greeting: "Hello", name: "Ben")   # Still outputs: "Hello, Ben!"
-```
-
-Keyword arguments provide more flexibility and readability, especially when working with methods that can take many parameters like `belongs_to`.
-
 ### Why we prefer `belongs_to`
 
 The `def movie` that we wrote out line-by-line and the new `belongs_to` version are producing the same thing. But `belongs_to` is somewhat shorter, and it reads better. It is easier to understand at a glance.
@@ -236,6 +194,48 @@ belongs_to(:movie)
 We can delete most of the code because the method `belongs_to` will follow a well defined pattern of naming! As long as the function, table, and foreign key columns share the same name (with only capitalization difference), then we can write a very short, explicit, and clear association accessor method.
 
 If you prefer to write out the entire thing, you are welcome to, but this is just another shortcut in your toolbox.
+
+### Aside: keyword arguments
+
+Note the structure we are using for our association accessor helper method `belongs_to`:
+
+```ruby
+belongs_to(:movie, class_name: "Movie", foreign_key: "movie_id")
+```
+
+The structure `some_key: "some_value"` used in e.g. `class_name: "Movie"` is known as a **keyword argument** in Ruby, as opposed to **positional arguments**.
+
+Positional arguments are the most common way to pass arguments to a method in Ruby. They are based on the order in which values are passed:
+
+```ruby
+def greet(name, greeting)
+  return "#{greeting}, #{name}!"
+end
+
+pp greet("Ben", "Hello")
+```
+{: .repl #positional title="Positional arguments" points="1"}
+
+In this case, `"Ben"` is passed as the first argument and `"Hello"` as the second. The method `greet` then uses these in the order they were passed.
+
+On the other hand, keyword arguments are a way to pass arguments to a method in _a hash-like manner_. With keyword arguments, you can provide a name to the value you're passing to the method. Here's the same example as above, but with keyword arguments:
+
+```ruby
+def greet(name:, greeting:)
+  return "#{greeting}, #{name}!"
+end
+
+pp greet(name: "Ben", greeting: "Hello")
+```
+{: .repl #keyword title="Keyword arguments" points="1"}
+
+In this case, we're explicitly saying that `"Ben"` is for the `name` argument, and `"Hello"` is for the `greeting` argument. This gives us more flexibility, as it doesn't matter which order we pass the arguments in because they're explicitly matched to their respective parameters in the method definition.
+
+```ruby
+pp greet(greeting: "Hello", name: "Ben")   # Still outputs: "Hello, Ben!"
+```
+
+Keyword arguments provide more flexibility and readability, especially when working with methods that can take many parameters like `belongs_to` and `has_many`.
 
 ## `has_many`
 
