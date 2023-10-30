@@ -1,5 +1,7 @@
 # Refactoring Must See Movies GUI with Association Accessor Helper Methods
 
+---
+
 <div class="bg-blue-100 py-1 px-5" markdown="1">
 [Here is a walkthrough video for this lesson.](https://share.descript.com/view/wy5mgzsL2WX) 
 </div>
