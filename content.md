@@ -30,7 +30,7 @@ has_many(:name_that_we_want, class_name: "", foreign_key: "")
 
 Our goal is to keep Must See Movies GUI (`msm-gui`) working the same way that it was after we finished building it; we're not going to add much. Therefore, we'll use the same target as before:
 
-[https://msm-gui.matchthetarget.com/](https://msm-gui.matchthetarget.com/)
+[msm-gui.matchthetarget.com](https://msm-gui.matchthetarget.com/)
 
 The project can be loaded here:
 
