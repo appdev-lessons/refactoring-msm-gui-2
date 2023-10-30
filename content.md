@@ -11,14 +11,14 @@
 <div class="bg-red-100 py-1 px-5 bleed-full" markdown="1">
 **Please note an important difference:** Since the video is from a version of the project using Ruby version 2.7, I defined methods like so:
 
-```ruby
+```ruby{1:(24-41)}
 belongs_to(:method_name, { :class_name => "", :foreign_key => "" })
 has_many(:method_name, { :class_name => "", :foreign_key => "" })
 ```
 
-However, in Ruby version 3, we need to use keyword arguments like so:
+However, in Ruby version 3, we _must_ use keyword arguments like so (dropping the curly braces and removing the hash rockets):
 
-```ruby
+```ruby{1:(24-37)}
 belongs_to(:method_name, class_name: "", foreign_key: "")
 has_many(:method_name, class_name: "", foreign_key: "")
 ```
