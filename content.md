@@ -379,3 +379,8 @@ The `:through` option specifies the association name for the join model (`:chara
 The `:source` option is necessary here because the source of the `has_many` could not be automatically inferred from the association name. If the `:source` option is not provided, Rails would look for an association named `actors` in the `Character` model when you invoke `the_movie.actors`, and similarly for `the_actor.movies`. With the `:source` option, you're telling Rails to use the `:actor` and `:movie` associations in the `Character` model instead.
 
 ---
+
+- Approximately how long (in minutes) did this lesson take you to complete?
+{: .free_text_number #time_taken title="Time taken" points="1" answer="any" }
+
+---
