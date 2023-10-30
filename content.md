@@ -335,7 +335,7 @@ Your goal is to define all six 1-Ns using `belongs_to` and `has_many`:
 
 When you are done, the last few `rake grade` specs should pass.
 
-## The `:source` and `:through` keyword arguments
+## The `:source` and `:through` keywords
 
 It may be helpful to use some additional keyword arguments on the `has_many` method.
 
