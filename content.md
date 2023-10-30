@@ -3,7 +3,7 @@
 ---
 
 <div class="bg-blue-100 py-1 px-5" markdown="1">
-[Here is a walkthrough video for this lesson.](https://share.descript.com/view/wy5mgzsL2WX) 
+[Here is a walkthrough video for this lesson.](https://share.descript.com/view/wy5mgzsL2WX) You should read the lesson as you go through the video and project, since there is more detail in the text than the video.
 </div>
 
 ---
