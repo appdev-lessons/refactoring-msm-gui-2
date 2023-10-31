@@ -1,30 +1,36 @@
 # Refactoring Must See Movies GUI with Association Accessor Helper Methods
 
-<div class="bg-red-100 py-1 px-5 bleed-full" markdown="1">
-[Here is a walkthrough video for this lesson.](https://share.descript.com/view/wy5mgzsL2WX) 
+---
 
+<div class="bg-blue-100 py-1 px-5" markdown="1">
+[Here is a walkthrough video for this lesson.](https://share.descript.com/view/wy5mgzsL2WX) You should read the lesson as you go through the video and project, since there is more detail in the text than the video.
+</div>
+
+---
+
+<div class="bg-red-100 py-1 px-5 bleed-full" markdown="1">
 **Please note an important difference:** Since the video is from a version of the project using Ruby version 2.7, I defined methods like so:
 
-```ruby
+```ruby{1:(30-47)}
 belongs_to(:name_that_we_want, { :class_name => "", :foreign_key => "" })
 has_many(:name_that_we_want, { :class_name => "", :foreign_key => "" })
 ```
 
-However, in Ruby version 3+ (which is the current Ruby version for the project), we need to drop the `{}` curly braces from the Hash argument (i.e. we need to use some different Ruby syntax, since the old way was deprecated for these methods):
+However, in Ruby version 3, we _must_ use keyword arguments like so (dropping the curly braces and removing the hash rockets):
 
-```ruby
-belongs_to(:name_that_we_want, :class_name => "", :foreign_key => "")
-has_many(:characters, :class_name => "", :foreign_key => "")
+```ruby{1:(30-43)}
+belongs_to(:name_that_we_want, class_name: "", foreign_key: "")
+has_many(:name_that_we_want, class_name: "", foreign_key: "")
 ```
 
-**Drop the curly braces when you define these methods.** The text below contains the correct syntax, with the curly braces dropped.
+**Use the latter syntax when you define these methods.** The text below contains the correct syntax, with the keyword arguments.
 </div>
 
 ## Objective
 
 Our goal is to keep Must See Movies GUI (`msm-gui`) working the same way that it was after we finished building it; we're not going to add much. Therefore, we'll use the same target as before:
 
-[https://msm-gui.matchthetarget.com/](https://msm-gui.matchthetarget.com/)
+[msm-gui.matchthetarget.com](https://msm-gui.matchthetarget.com/)
 
 The project can be loaded here:
 
@@ -125,7 +131,7 @@ There's a meta method called `belongs_to()`, which can be used outside of the me
 
 # ...
 class Character < ApplicationRecord
-  belongs_to(:name_that_we_want, :class_name => "", :foreign_key => "")
+  belongs_to(:name_that_we_want, class_name: "", foreign_key: "")
 
   def movie
   # ...
@@ -138,7 +144,7 @@ The first argument is the name of the method we want, then two key/value pairs c
 
 # ...
 class Character < ApplicationRecord
-  belongs_to(:movie, :class_name => "Movie", :foreign_key => "movie_id")
+  belongs_to(:movie, class_name: "Movie", foreign_key: "movie_id")
 
   # def movie
   #   key = self.movie_id
@@ -176,7 +182,7 @@ It is very common to query one table with the columns of another. And if we look
 Yet another reason that `belongs_to` is great, is that we can write: 
 
 ```ruby
-belongs_to(:movie, :class_name => "Movie", :foreign_key => "movie_id")
+belongs_to(:movie, class_name: "Movie", foreign_key: "movie_id")
 ``` 
 
 as simply
@@ -188,6 +194,48 @@ belongs_to(:movie)
 We can delete most of the code because the method `belongs_to` will follow a well defined pattern of naming! As long as the function, table, and foreign key columns share the same name (with only capitalization difference), then we can write a very short, explicit, and clear association accessor method.
 
 If you prefer to write out the entire thing, you are welcome to, but this is just another shortcut in your toolbox.
+
+### Aside: keyword arguments
+
+Note the structure we are using for our association accessor helper method `belongs_to`:
+
+```ruby
+belongs_to(:movie, class_name: "Movie", foreign_key: "movie_id")
+```
+
+The structure `some_key: "some_value"` used in e.g. `class_name: "Movie"` is known as a **keyword argument** in Ruby, as opposed to **positional arguments**.
+
+Positional arguments are the most common way to pass arguments to a method in Ruby. They are based on the order in which values are passed:
+
+```ruby
+def greet(name, greeting)
+  return "#{greeting}, #{name}!"
+end
+
+pp greet("Ben", "Hello")
+```
+{: .repl #positional title="Positional arguments" points="1"}
+
+In this case, `"Ben"` is passed as the first argument and `"Hello"` as the second. The method `greet` then uses these in the order they were passed.
+
+On the other hand, keyword arguments are a way to pass arguments to a method in _a hash-like manner_. With keyword arguments, you can provide a name to the value you're passing to the method. Here's the same example as above, but with keyword arguments:
+
+```ruby
+def greet(name:, greeting:)
+  return "#{greeting}, #{name}!"
+end
+
+pp greet(name: "Ben", greeting: "Hello")
+```
+{: .repl #keyword title="Keyword arguments" points="1"}
+
+In this case, we're explicitly saying that `"Ben"` is for the `name` argument, and `"Hello"` is for the `greeting` argument. This gives us more flexibility, as it doesn't matter which order we pass the arguments in because they're explicitly matched to their respective parameters in the method definition.
+
+```ruby
+pp greet(greeting: "Hello", name: "Ben")   # Still outputs: "Hello, Ben!"
+```
+
+Keyword arguments provide more flexibility and readability, especially when working with methods that can take many parameters like `belongs_to` and `has_many`.
 
 ## `has_many`
 
@@ -234,7 +282,7 @@ class Movie < ApplicationRecord
   validates(:title, uniqueness: true)
   
   belongs_to(:director)
-  has_many(:characters, :class_name => "Character", :foreign_key => "movie_id")
+  has_many(:characters, class_name: "Character", foreign_key: "movie_id")
 
   # def characters
   #   key = self.id
@@ -249,7 +297,7 @@ All we did was provide the method with the three pieces of information that we e
 Similar to `belongs_to`, if the three arguments match, we can write:
 
 ```ruby
-has_many(:characters, :class_name => "Character", :foreign_key => "movie_id")
+has_many(:characters, class_name: "Character", foreign_key: "movie_id")
 ``` 
 
 as simply
@@ -265,12 +313,12 @@ We could have called this `movies`, which would have allowed us to write `has_ma
 So in the case where we selected our own, non-conventional names, then we need to be explicit and write: 
 
 ```ruby
-has_many(:filmography, :class_name => "Movie")
+has_many(:filmography, class_name: "Movie")
 ``` 
 
-We can still omit the foreign key, because now the method will know to call the foreign key `movie_id` based on the `:class_name`.
+We can still omit the foreign key, because now the method will know to call the foreign key `movie_id` based on the `class_name:`.
 
-## Finishing up with the association accessor wizard
+## Association accessor wizard
 
 For the rest of this project, follow along with the video to learn about the helpful association accessor wizard that we built for you:
 
@@ -291,9 +339,9 @@ When you are done, the last few `rake grade` specs should pass.
 
 It may be helpful to use some additional keyword arguments on the `has_many` method.
 
-There is more detail in the [Rails guide for `has_many :through`](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association) and for [the `:source` keyword](https://guides.rubyonrails.org/association_basics.html#options-for-has-many-source), but let's discuss them with a practical example relevant to our database tables here.
+There is more detail in the [Rails guide for `has_many :through`](https://guides.rubyonrails.org/association_basics.html#the-has-many-through-association) and for [the `:source` keyword argument](https://guides.rubyonrails.org/association_basics.html#options-for-has-many-source), but let's discuss them with a practical example relevant to our database tables here.
 
-You can use the `has_many :through` and `belongs_to` associations to set up a many-to-many relationship between models through a join model. The `:source` option can be used to specify the source association for a `has_many :through` association.
+You can use the `has_many :through` and `belongs_to` associations to set up a many-to-many relationship between models through a join model. The `:source` keyword argument can be used to specify the source association for a `has_many :through` association.
 
 For example, let's consider a movie database where a `Movie` has many `Actor`s through `Character`s, and an `Actor` has many `Movie`s through `Character`s. Here's how you can set that up:
 
@@ -302,7 +350,7 @@ In the `Movie` model:
 ```ruby{3}
 class Movie < ApplicationRecord
   has_many(:characters)
-  has_many(:actors, :through => :characters, :source => :actor)
+  has_many(:actors, through: :characters, source: :actor)
 end
 ```
 
@@ -311,7 +359,7 @@ And in the `Actor` model:
 ```ruby{3}
 class Actor < ApplicationRecord
   has_many(:characters)
-  has_many(:movies, :through => :characters, :source => :movie)
+  has_many(:movies, through: :characters, source: :movie)
 end
 ```
 
@@ -326,8 +374,13 @@ end
 
 With this setup, you can access all actors in a movie with `the_movie.actors`, and all movies an actor has been in with `the_actor.movies`.
 
-The `:through` option specifies the association name for the join model (`:characters`), and the `:source` option specifies the name of the association in the join model that `has_many :through` is going through to get to the `Actor` or `Movie`. 
+The `through:` keyword argument specifies the association name for the join model (`:characters`), and the `source:` keyword argument specifies the name of the association in the join model that `has_many through:` is going through to get to the `Actor` or `Movie`. 
 
-The `:source` option is necessary here because the source of the `has_many` could not be automatically inferred from the association name. If the `:source` option is not provided, Rails would look for an association named `actors` in the `Character` model when you invoke `the_movie.actors`, and similarly for `the_actor.movies`. With the `:source` option, you're telling Rails to use the `:actor` and `:movie` associations in the `Character` model instead.
+The `source:` keyword argument is necessary here because the source of the `has_many` could not be automatically inferred from the association name. If the `source:` keyword argument is not provided, Rails would look for an association named `actors` in the `Character` model when you invoke `the_movie.actors`, and similarly for `the_actor.movies`. With the `source:` keyword argument, you're telling Rails to use the `:actor` and `:movie` associations in the `Character` model instead.
+
+---
+
+- Approximately how long (in minutes) did this lesson take you to complete?
+{: .free_text_number #time_taken title="Time taken" points="1" answer="any" }
 
 ---
